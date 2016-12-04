@@ -46,6 +46,49 @@ namespace Day4
             }
         }
 
+        public string DecryptedRoomName
+        {
+            get
+            {
+                return DecryptName(RoomName, SectorId);
+            }
+        }
+
+        private string DecryptName(string encryptedName, long times)
+        {
+            var decrypted = String.Empty;
+
+            foreach(var c in encryptedName)
+            {
+                if(c == '-')
+                {
+                    decrypted = String.Concat(decrypted, " ");
+                }
+                else
+                {
+                    var next = c;
+
+                    for(int i = 0; i< times; i++)
+                    {
+                        next = ShiftChar(next);
+                    }
+
+                    decrypted = String.Concat(decrypted, next);
+                }
+            }
+
+            return decrypted.Trim();
+        }
+
+        private char ShiftChar(char c)
+        {
+            if (c == 'z')
+                return 'a';
+
+            var charDigit = (int)c;
+            return (char)(charDigit + 1);
+        }
+
         private string CalculateChecksum()
         {
             var cleanRoomName = RoomName.Replace("-", "");
