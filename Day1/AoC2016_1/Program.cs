@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using System.IO;
 
-namespace AoC2016_1
+namespace Day1
 {
     class Program
     {
