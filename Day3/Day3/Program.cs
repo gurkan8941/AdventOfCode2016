@@ -16,7 +16,44 @@ namespace Day3
             var validTriangles = triangles.Where(t => t.IsValid());
 
             Console.WriteLine($"There are {validTriangles.Count()} valid triangles");
+
+
+            var allSides = allLines.SelectMany(s => s.Select(t => Int32.Parse(t)));
+            triangles = ParseTriangles(allSides);
+            validTriangles = triangles.Where(t => t.IsValid());
+
+            Console.WriteLine($"There are {validTriangles.Count()} valid triangles");
+
+
             Console.ReadLine();
+        }
+
+        private static IEnumerable<Triangle> ParseTriangles(IEnumerable<int> inputSides)
+        {
+            var firstColumnSides = inputSides.Where((s, index) => (index % 3) == 0);
+            var secondColumnSides = inputSides.Where((s, index) => (index % 3) == 1);
+            var thirdColumnSides = inputSides.Where((s, index) => (index % 3) == 2);
+
+            var triangles = new List<Triangle>();
+
+            triangles.AddRange(GetTriangles(firstColumnSides));
+            triangles.AddRange(GetTriangles(secondColumnSides));
+            triangles.AddRange(GetTriangles(thirdColumnSides));
+
+            return triangles;
+        }
+
+        private static IEnumerable<Triangle> GetTriangles(IEnumerable<int> columnSides)
+        {
+            var triangles = new List<Triangle>();
+
+            for (int i = 0; i <= columnSides.Count() - 3; i = i + 3)
+            {
+                var triangle = new Triangle(columnSides.Skip(i).Take(3).ToArray());
+                triangles.Add(triangle);
+            }
+
+            return triangles;
         }
 
         private static IEnumerable<Triangle> ParseTriangles(IEnumerable<string[]> inputLines)
